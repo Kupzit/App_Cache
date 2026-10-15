@@ -17,6 +17,8 @@ public class SalesRepository {
 
     public List<Map<String, Object>> getSalesData() {
 
+        System.out.println(">>> CONSULTANDO SQL SERVER");
+
         String sql = """
                 SELECT
                     soh.SalesOrderID,
