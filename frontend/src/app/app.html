@@ -1,0 +1,304 @@
+<div class="app">
+
+  <!-- HEADER -->
+
+  <header class="navbar">
+
+    <div class="brand">
+      <div class="logo">AW</div>
+
+      <div>
+        <h1>AdventureWorks Explorer</h1>
+        <span>Sales Data Dashboard</span>
+      </div>
+    </div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      Spring API
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <p class="eyebrow">DATABASE PERFORMANCE</p>
+
+        <h2>
+          Explore AdventureWorks
+          <span>sales data.</span>
+        </h2>
+
+        <p class="description">
+          Data retrieved from SQL Server through a Spring Boot REST API
+          with backend caching enabled.
+        </p>
+
+        <div class="actions">
+
+          <button
+            class="primary-button"
+            (click)="loadSales()"
+            [disabled]="loading">
+
+            @if (loading) {
+            Loading...
+            } @else {
+            Load Sales Data
+            }
+
+          </button>
+
+          @if (sales.length > 0) {
+
+          <button
+            class="secondary-button"
+            (click)="clearData()">
+
+            Clear
+
+          </button>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="architecture">
+
+        <div class="architecture-title">
+          Request Flow
+        </div>
+
+        <div class="flow-item">
+          <span>01</span>
+          Angular
+        </div>
+
+        <div class="line"></div>
+
+        <div class="flow-item">
+          <span>02</span>
+          Spring Boot
+        </div>
+
+        <div class="line"></div>
+
+        <div class="flow-item">
+          <span>03</span>
+          SQL Server
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ERROR -->
+
+    @if (error) {
+
+    <div class="error-message">
+      {{ error }}
+    </div>
+
+    }
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+      <div class="stat-card">
+
+        <span class="stat-label">Records received</span>
+
+        <strong>
+          {{ sales.length | number }}
+        </strong>
+
+        <span class="stat-info">
+          Sales records
+        </span>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span class="stat-label">Response time</span>
+
+        <strong>
+          @if (responseTime !== null) {
+          {{ responseTime }} ms
+          } @else {
+          —
+          }
+        </strong>
+
+        <span class="stat-info">
+          Client measurement
+        </span>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span class="stat-label">Database</span>
+
+        <strong class="database-name">
+          AdventureWorks
+        </strong>
+
+        <span class="stat-info">
+          SQL Server
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- TABLE -->
+
+    <section class="data-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <p class="eyebrow">RESULT SET</p>
+          <h3>Sales Data</h3>
+        </div>
+
+        @if (sales.length > 0) {
+
+        <span class="records-info">
+            Showing 25 of {{ sales.length | number }}
+          </span>
+
+        }
+
+      </div>
+
+
+      @if (loading) {
+
+      <div class="empty-state">
+
+        <div class="loader"></div>
+
+        <h3>Retrieving records</h3>
+
+        <p>
+          Requesting sales information from the backend.
+        </p>
+
+      </div>
+
+      } @else if (sales.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">DB</div>
+
+        <h3>No data loaded</h3>
+
+        <p>
+          Press "Load Sales Data" to request records from AdventureWorks.
+        </p>
+
+      </div>
+
+      } @else {
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Due</th>
+          </tr>
+
+          </thead>
+
+
+          <tbody>
+
+          @for (sale of previewSales; track $index) {
+
+          <tr>
+
+            <td class="order-id">
+              #{{ sale.SalesOrderID }}
+            </td>
+
+            <td>
+              {{ sale.OrderDate | date:'mediumDate' }}
+            </td>
+
+            <td class="product">
+              {{ sale.ProductName }}
+            </td>
+
+            <td>
+              {{ sale.ProductID }}
+            </td>
+
+            <td>
+              {{ sale.OrderQty }}
+            </td>
+
+            <td>
+              {{ sale.UnitPrice | currency:'USD' }}
+            </td>
+
+            <td class="total">
+              {{ sale.TotalDue | currency:'USD' }}
+            </td>
+
+          </tr>
+
+          }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      }
+
+    </section>
+
+  </main>
+
+
+  <footer>
+
+    <span>AdventureWorks Performance Demo</span>
+
+    <span>
+      Angular · Spring Boot · SQL Server
+    </span>
+
+  </footer>
+
+</div>
